@@ -68,7 +68,7 @@ The application will run at http://localhost:5173.
 
 Experience the NPC Store in action:
 
-Click here to watch the demo
+Click here to watch the demo https://drive.google.com/file/d/1_gx3rTvr7Y1NsBP84gq7jddH7v0vxyIS/view?usp=sharing
 
 📸 Screenshots
 
