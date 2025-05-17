@@ -63,7 +63,9 @@ The application will run at http://localhost:5173.
     ├── tailwind.config.js    # Tailwind CSS configuration
 
     └── vite.config.js        # Vite configuration
+
 ▶️ Demo Video
+
 Experience the NPC Store in action:
 
 Click here to watch the demo on YouTube
