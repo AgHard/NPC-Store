@@ -76,7 +76,8 @@ Click here to watch the demo
 
 ![image](https://github.com/user-attachments/assets/66e06763-f7bc-4d7e-8752-4ed5ce4b1b2c)
 
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/5c05c814-6437-4a4e-8db5-d3fc1362b07c)
+
 
 🧪 Available Scripts
 
