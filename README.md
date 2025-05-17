@@ -40,7 +40,7 @@ The application will run at http://localhost:5173.
 
 📁 Project Structure
 
-NPC-Store/
+    NPC-Store/
 
     ├── backend/              # Backend logic (if applicable)
 
@@ -53,10 +53,15 @@ NPC-Store/
     │   ├── pages/            # Page components (e.g., Home, Inventory)
 
     │   ├── App.jsx           # Main application component
+
     │   └── main.jsx          # Entry point
+
     ├── index.html            # HTML template
+
     ├── package.json          # Project metadata and dependencies
+
     ├── tailwind.config.js    # Tailwind CSS configuration
+
     └── vite.config.js        # Vite configuration
 ▶️ Demo Video
 Experience the NPC Store in action:
