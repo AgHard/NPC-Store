@@ -4,6 +4,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { AnimatePresence, motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 import AnimatedLogoutButton from "./AnimatedLogoutButton";
+import { FiShoppingCart, FiHeart } from "react-icons/fi";
 
 export default function UserMenu({ hoveredNav, setHoveredNav, handleLogout }) {
   const { user } = useContext(AuthContext);
@@ -126,20 +127,23 @@ export default function UserMenu({ hoveredNav, setHoveredNav, handleLogout }) {
             }}
           >
             <Link
-              to="/cartdetails"
-              style={{
-                display: "block",
-                padding: "10px 16px",
-                color: "#fff",
-                textDecoration: "none",
-                transition: "background 0.2s ease",
-              }}
-              onMouseEnter={(e) => (e.target.style.background = "#2a2a2a")}
-              onMouseLeave={(e) => (e.target.style.background = "transparent")}
-            >
-              View Cart
-            </Link>
-            <Link
+  to="/cartdetails"
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    padding: "10px 16px",
+    color: "#fff",
+    textDecoration: "none",
+    transition: "background 0.2s ease",
+  }}
+  onMouseEnter={(e) => (e.target.style.background = "#2a2a2a")}
+  onMouseLeave={(e) => (e.target.style.background = "transparent")}
+>
+  <FiShoppingCart size={16} />
+  View Cart
+</Link>
+            {/* <Link
               to="/wishlist"
               style={{
                 display: "block",
@@ -152,7 +156,7 @@ export default function UserMenu({ hoveredNav, setHoveredNav, handleLogout }) {
               onMouseLeave={(e) => (e.target.style.background = "transparent")}
             >
               View Wishlist
-            </Link>
+            </Link> */}
             <AnimatedLogoutButton handleLogout={handleLogout} />
           </motion.div>
         )}

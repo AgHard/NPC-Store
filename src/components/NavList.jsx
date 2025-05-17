@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { FiChevronDown } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import { useCollections } from "../context/CollectionContext";
 
 const dropdownVariants = {
   hidden: {
@@ -21,23 +22,19 @@ const dropdownVariants = {
 
 const NavList = () => {
   const [navItems, setNavItems] = useState([]);
-  const [collections, setCollections] = useState([]);
+  const { collections } = useCollections();
   const [hoveredNav, setHoveredNav] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchNavItems = async () => {
       try {
-        const [navRes, colRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/navItems"),
-          axios.get("http://localhost:5000/api/collections"),
-        ]);
-        setNavItems(navRes.data);
-        setCollections(colRes.data);
+        const res = await axios.get("http://localhost:5000/api/navItems");
+        setNavItems(res.data);
       } catch (err) {
-        console.error("Failed to fetch nav or collection data", err);
+        console.error("Failed to fetch nav items", err);
       }
     };
-    fetchData();
+    fetchNavItems();
   }, []);
 
   const getCollectionId = (name) => {
@@ -53,7 +50,6 @@ const NavList = () => {
     }
   };
 
-  const goldColor = "#FFD700";
   const fontFamily = "'Cairo', sans-serif";
 
   return (
@@ -115,21 +111,14 @@ const NavList = () => {
                   animate="visible"
                   exit="hidden"
                   className="absolute left-0 z-50 w-56 mt-3 overflow-hidden shadow-xl rounded-xl ring-1 ring-gray-800"
-                  style={{
-                    backgroundColor: "#1E1E1E",
-                    fontFamily,
-                  }}
+                  style={{ backgroundColor: "#1E1E1E", fontFamily }}
                 >
                   {dropdownItems.map((item) => (
                     <Link
                       key={item.group_id}
                       to={`/games/${item.group_id}`}
                       className="block px-5 py-3 text-base font-semibold transition border-l-4 border-transparent hover:bg-gray-800 hover:border-yellow-500"
-                      style={{
-                        color: "white",
-                        fontSize: "14px",
-                        transition: "0.2s",
-                      }}
+                      style={{ color: "white", fontSize: "14px", transition: "0.2s" }}
                     >
                       {item.name}
                     </Link>

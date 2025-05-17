@@ -13,7 +13,7 @@ const validateRequest = (req, res, next) => {
     next();
 };
 
-// router.get('/', gameController.getGames);
+router.get('/', gameController.getGames);
 
 // router.get('/:group_id', 
 //     param('group_id').isInt().withMessage('Game ID must be an integer'), 
@@ -67,17 +67,7 @@ router.post('/',
 );
 
 // ✅ UPDATE Game (Protected: Admin Only)
-router.put('/:id', 
-    verifyToken, 
-    adminOnly,
-    [
-        param('id').isInt().withMessage('Game ID must be an integer'),
-        body('name').optional().notEmpty().withMessage('Game name cannot be empty'),
-        body('description').optional().isLength({ max: 255 }).withMessage('Description must be 255 characters or less')
-    ],
-    validateRequest,
-    gameController.updateGame
-);
+router.put('/:id', verifyToken, adminOnly, gameController.updateGame);
 
 // ✅ DELETE Game (Protected: Admin Only)
 router.delete('/:id', 

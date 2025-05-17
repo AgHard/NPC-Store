@@ -5,11 +5,12 @@ exports.getGames = async (req, res) => {
     const [results] = await db.query(`
       SELECT 
         MIN(id) AS id,
+        name,
         group_id, 
         base_name, 
         image_url 
       FROM games 
-      GROUP BY group_id, base_name, image_url
+      GROUP BY group_id, base_name, image_url, name
     `);
     res.json(results);
   } catch (error) {
@@ -43,19 +44,28 @@ exports.getGamePackages = async (req, res) => {
 
 
 exports.getRegionsByGroupId = async (req, res) => {
-    const { group_id } = req.params;
-  
-    try {
-      const [regions] = await db.query(
-        'SELECT id, name, image_url FROM games WHERE group_id = ?',
-        [group_id]
-      );
-      res.json(regions);
-    } catch (error) {
-      console.error('Error fetching regions:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  };
+  const { group_id } = req.params;
+
+  try {
+    const [regions] = await db.query(
+      `
+      SELECT 
+        g.id, 
+        g.name, 
+        c.image_url 
+      FROM games g
+      JOIN collections c ON g.group_id = c.group_id
+      WHERE g.group_id = ?
+      `,
+      [group_id]
+    );
+    res.json(regions);
+  } catch (error) {
+    console.error('Error fetching regions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
   
   exports.getPackagesByGameId = async (req, res) => {
     const gameId = req.params.game_id;
@@ -108,43 +118,58 @@ exports.getPackageDetails = async (req, res) => {
 };
 
 exports.addGame = async (req, res) => {
-    const { name, category } = req.body;
+    const { name, image_url, base_name, group_id } = req.body;
 
     try {
-        db.query('INSERT INTO games (name, category) VALUES (?, ?)', [name, category], (err, result) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.status(201).json({ message: 'Game added successfully', gameId: result.insertId });
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+        db.query(
+          `INSERT INTO games (name, image_url, base_name, group_id) 
+          VALUES (?, ?, ?, ?)`, 
+          [name, image_url, base_name, group_id]
+        );
+          res.status(201).json({ message: 'Game added successfully'});
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
+        }
 };
 
 exports.updateGame = async (req, res) => {
-    const gameId = req.params.id;
-    const { name, category } = req.body;
+  const { id } = req.params;
+  const { name, image_url, base_name, group_id } = req.body;
 
-    try {
-        db.query('UPDATE games SET name = ?, category = ? WHERE id = ?', [name, category, gameId], (err, result) => {
-            if (err) return res.status(500).json({ error: err.message });
-            if (result.affectedRows === 0) return res.status(404).json({ error: 'Game not found' });
-            res.json({ message: 'Game updated successfully' });
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+  try {
+    const [result] = await db.query(
+      `UPDATE games 
+       SET name = ?, image_url = ?, base_name = ?, group_id = ?
+       WHERE id = ?`,
+      [name, image_url, base_name, group_id, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Game not found" });
     }
+
+    res.json({ message: "Game updated successfully" });
+  } catch (error) {
+    console.error("Error updating game:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+
 
 exports.deleteGame = async (req, res) => {
-    const gameId = req.params.id;
+  const { id } = req.params;
 
-    try {
-        db.query('DELETE FROM games WHERE id = ?', [gameId], (err, result) => {
-            if (err) return res.status(500).json({ error: err.message });
-            if (result.affectedRows === 0) return res.status(404).json({ error: 'Game not found' });
-            res.json({ message: 'Game deleted successfully' });
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+  try {
+    const [result] = await db.query("DELETE FROM games WHERE id = ?", [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Game not found" });
     }
+
+    res.json({ message: "Game deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting game:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+

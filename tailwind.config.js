@@ -35,6 +35,7 @@ module.exports = {
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",
+        gold: "0 0 10px #FFD700",
       },
       screens: {
         xs: "450px",

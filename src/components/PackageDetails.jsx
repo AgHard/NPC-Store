@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import FlipCard from "./FlipCard";
+import Swal from "sweetalert2";
 import { WishlistContext } from "../context/WishlistContext";
-import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext"; // 👈 Needed to access addToCart & updateQuantity
 
 const PackageDetails = () => {
   const { group_id, package_id } = useParams();
   const [pkg, setPkg] = useState(null);
   const [related, setRelated] = useState([]);
+  const [quantity, setQuantity] = useState(1); // ✅ Quantity state
+
   const { addToWishlist } = useContext(WishlistContext);
+  const { user } = useContext(AuthContext);
+  const { addToCart, updateQuantity } = useContext(CartContext); // ✅ Use cart context
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -22,7 +28,6 @@ const PackageDetails = () => {
         const relatedRes = await axios.get(
           `http://localhost:5000/api/games/${res.data.game_id}/package`
         );
-        console.log(res.data.game_id);
 
         const filteredRelated = relatedRes.data.filter(
           (p) => p.id !== parseInt(package_id)
@@ -36,12 +41,48 @@ const PackageDetails = () => {
   }, [group_id, package_id]);
 
   if (!pkg) {
-    return <p className="mt-20 text-center text-white">Loading...</p>;
+    return (
+      <p
+        className="mt-20 text-center"
+        style={{ fontFamily: "'Cairo', sans-serif", color: "#fff" }}
+      >
+        Loading...
+      </p>
+    );
   }
 
+  const fontFamily = "'Cairo', sans-serif";
+  const goldColor = "#FFD700";
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      Swal.fire({
+        icon: "info",
+        title: "You must log in first",
+        position: "center",
+        showConfirmButton: false,
+        timer: 2000,
+        background: "#222",
+        color: "#fff",
+      });
+      return;
+    }
+
+    try {
+      await addToCart(pkg); // Add package
+      await updateQuantity(pkg.id, quantity); // Immediately update its quantity
+    } catch (err) {
+      console.error("Failed to add/update cart:", err);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#0b0c1a] text-white px-4 md:px-10 py-8 mt-28">
+    <div
+      className="min-h-screen px-4 py-8 md:px-10 mt-28"
+      style={{ backgroundColor: "#0b0c1a", color: "white", fontFamily }}
+    >
       <div className="flex flex-col items-center justify-center gap-10 mx-auto lg:flex-row lg:items-start max-w-7xl">
+        {/* Image */}
         <div className="w-full max-w-sm">
           <img
             src={pkg.image_url}
@@ -50,11 +91,16 @@ const PackageDetails = () => {
           />
         </div>
 
-        <div className="bg-[#121321] border border-green-700 p-6 rounded-md w-full max-w-xl">
-          <h2 className="mb-2 text-2xl font-bold md:text-3xl">
+        {/* Info Box */}
+        <div
+          className="w-full max-w-xl p-6 rounded-md"
+          style={{ backgroundColor: "#121321", border: `1px solid ${goldColor}` }}
+        >
+          <h2 className="mb-2 text-2xl font-bold text-white md:text-3xl">
             {pkg.amount} {pkg.currency}
           </h2>
-          <p className="mb-4 text-xl font-semibold text-red-500">
+
+          <p className="mb-4 text-xl font-semibold" style={{ color: goldColor }}>
             EGP {pkg.price_egp}
           </p>
 
@@ -62,36 +108,56 @@ const PackageDetails = () => {
             <li>{pkg.description_of_package}</li>
             <li>Region: Egypt</li>
             <li>
-              <span className="text-white">No Refunds or exchange!</span> Check
-              your <span className="font-semibold text-green-500">RIOT ID</span>
+              <span className="text-white">No Refunds or exchange!</span> Check your{" "}
+              <span className="font-semibold text-green-500">RIOT ID</span>
             </li>
             <li>VP arrives in 5 min (up to few hours)</li>
             <li>Don't order after midnight</li>
           </ul>
 
+          {/* Quantity & Add to Cart */}
           <div className="flex items-center mb-4">
             <input
               type="number"
-              defaultValue={1}
-              className="w-16 px-2 py-1 rounded border border-gray-600 bg-[#1a1b2f] text-white mr-4"
+              min={1}
+              value={quantity}
+              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+              className="w-16 px-2 py-1 mr-4 rounded border border-gray-600 bg-[#1a1b2f] text-white"
             />
-            <button className="px-6 py-2 font-bold text-white bg-red-600 rounded hover:bg-red-700">
+            <button
+              onClick={handleAddToCart}
+              className={`px-6 py-2 font-bold rounded transition duration-200 ${
+                user
+                  ? "text-black hover:opacity-90"
+                  : "bg-gray-600 text-white"
+              }`}
+              style={{
+                backgroundColor: user ? goldColor : "#555",
+                fontFamily,
+                cursor: user ? "pointer" : "not-allowed",
+              }}
+            >
               Add to cart
             </button>
           </div>
 
-          <button
+          {/* <button
             onClick={() => addToWishlist(pkg.id)}
-            className="text-sm text-gray-300 underline hover:text-white"
+            className="text-sm underline transition hover:text-yellow-400"
+            style={{ color: "#ccc" }}
           >
             ♥ Add to wishlist
-          </button>
+          </button> */}
         </div>
       </div>
 
+      {/* Related Section */}
       {related.length > 0 && (
         <div className="px-4 mx-auto mt-20 max-w-7xl">
-          <h3 className="mb-6 text-2xl font-bold text-white">
+          <h3
+            className="mb-6 text-2xl font-bold"
+            style={{ fontFamily, color: "#fff" }}
+          >
             More from this Game
           </h3>
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

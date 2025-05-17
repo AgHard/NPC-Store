@@ -158,6 +158,7 @@ const Hero2 = () => {
               key={idx}
               src={img}
               alt={`user${idx}`}
+              loading='lazy'
               style={{
                 width: "32px",
                 height: "32px",

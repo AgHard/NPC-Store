@@ -1,159 +1,14 @@
-// import React from 'react';
-// import { Tilt } from 'react-tilt';
-// import { motion } from 'framer-motion';
-// import { useNavigate } from 'react-router-dom';
-// import { fadeIn } from '../utils/motion';
-
-// const GameCard = ({ index, id, name, image_url, selected, onClick }) => {
-//   const navigate = useNavigate();
-
-//   const handleClick = () => {
-//     if (onClick) {
-//       onClick();
-//     } else {
-//       navigate(`/games/${id}`);
-//     }
-//   };
-
-//   return (
-//     <Tilt options={{ max: 45, scale: 1, speed: 450 }} className='xs:w-[250px] w-full'>
-//   <motion.div
-//     initial="hidden"
-//     animate="show"
-//     variants={fadeIn("right", "spring", index * 0.5, 0.75)}
-//     onClick={handleClick}
-//     className={`w-full ${selected ? 'border-4 border-yellow-400' : 'green-pink-gradient'} p-[1px] rounded-[20px] shadow-card cursor-pointer`}
-//   >
-//     {/* <div className='bg-tertiary rounded-[20px] w-full h-[280px] overflow-hidden'>
-//       <img
-//         src={image_url}
-//         alt={name}
-//         className='w-full h-full object-cover rounded-[20px]'
-//       />
-//     </div> */}
-//     <div className='bg-tertiary rounded-[20px] w-full h-[280px] flex justify-center items-center overflow-hidden'>
-//   <img
-//     src={image_url}
-//     alt={name}
-//     className='w-[95%] h-[95%] object-cover rounded-[16px]'
-//   />
-// </div>
-
-//   </motion.div>
-// </Tilt>
-
-//   );
-// };
-
-// export default GameCard;
-
-// import React from 'react';
-// import { Tilt } from 'react-tilt';
-// import { motion } from 'framer-motion';
-// import { useNavigate } from 'react-router-dom';
-// import { fadeIn } from '../utils/motion';
-
-// const GameCard = ({ index, id, name, image_url, selected, onClick }) => {
-//   const navigate = useNavigate();
-
-//   const handleClick = () => {
-//     if (onClick) {
-//       onClick();
-//     } else {
-//       navigate(`/games/${id}`);
-//     }
-//   };
-
-//   const containerStyle = {
-//     position: 'relative',
-//     borderRadius: '20px',
-//     padding: '1px',
-//     overflow: 'hidden',
-//     cursor: 'pointer',
-//     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
-//   };
-
-//   const animatedBorderStyle = {
-//     position: 'absolute',
-//     top: '-50%',
-//     left: '-50%',
-//     width: '200%',
-//     height: '200%',
-//     background:
-//       'linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red)',
-//     animation: 'spin 4s linear infinite',
-//     opacity: 0.7,
-//     zIndex: 0,
-//   };
-
-//   const blurredBorderStyle = {
-//     ...animatedBorderStyle,
-//     filter: 'blur(10px)',
-//     zIndex: 0,
-//   };
-
-//   const innerCardStyle = {
-//     backgroundColor: '#1f1f1f',
-//     borderRadius: '20px',
-//     width: '100%',
-//     height: '280px',
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     zIndex: 1,
-//     position: 'relative',
-//   };
-
-//   const imageStyle = {
-//     width: '95%',
-//     height: '95%',
-//     objectFit: 'cover',
-//     borderRadius: '16px',
-//   };
-
-//   return (
-//     <Tilt options={{ max: 45, scale: 1, speed: 450 }} className="xs:w-[250px] w-full">
-//       <motion.div
-//         initial="hidden"
-//         animate="show"
-//         variants={fadeIn('right', 'spring', index * 0.5, 0.75)}
-//         onClick={handleClick}
-//         style={containerStyle}
-//       >
-//         {/* Animated gradient borders */}
-//         <div style={animatedBorderStyle}></div>
-//         <div style={blurredBorderStyle}></div>
-
-//         {/* Main content card */}
-//         <div style={innerCardStyle}>
-//           <img src={image_url} alt={name} style={imageStyle} />
-//         </div>
-//       </motion.div>
-
-//       {/* Inline keyframe animation */}
-//       <style>
-//         {`
-//           @keyframes spin {
-//             0% { transform: rotate(0deg) translate(-50%, -50%); }
-//             100% { transform: rotate(360deg) translate(-50%, -50%); }
-//           }
-//         `}
-//       </style>
-//     </Tilt>
-//   );
-// };
-
-// export default GameCard;
-
-import React from 'react';
+import React,{useState} from 'react';
 import { Tilt } from 'react-tilt';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { fadeIn } from '../utils/motion';
 
-const GameCard = ({ index, id, name, image_url, selected, onClick }) => {
+const GameCard = ({ index, id, name, image_url, selected, onClick, region_name }) => {
   const navigate = useNavigate();
-
+  const [selectedRegionId, setSelectedRegionId] = useState(null);
+  const fontFamily = "'Cairo', sans-serif";
+  const goldColor = "#FFD700";
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -239,13 +94,29 @@ const GameCard = ({ index, id, name, image_url, selected, onClick }) => {
             src={image_url}
             alt={name}
             style={{
-              width: '75%',
-              height: '75%',
+              width: '95%',
+              height: '95%',
               objectFit: 'cover',
               borderRadius: '16px',
             }}
           />
         </div>
+        {region_name && (
+        <motion.div
+        key={id}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.98 }}
+        animate={{ 
+          borderColor: selectedRegionId === id ? goldColor : "#444",
+          backgroundColor: selectedRegionId === id ? "#1e1e1e" : "#111" 
+        }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className={`cursor-pointer px-4 py-3 rounded-lg border-2 text-white shadow-md font-bold text-center`}
+        style={{ fontFamily }}
+      >
+        {name}
+      </motion.div>
+      )}
 
         {/* Inline keyframe animations */}
         <style>

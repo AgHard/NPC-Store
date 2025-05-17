@@ -125,7 +125,7 @@ const Footer = () => {
             "aman.png", "vodafone.svg", "meeza.svg", "gpay.svg",
             "mada.svg", "stc.svg"
           ].map((file) => (
-            <img key={file} src={`/payments/${file}`} alt={file} style={{ height: "32px" }} />
+            <img key={file} src={`/payments/${file}`} alt={file} style={{ height: "32px" }} loading="lazy" />
           ))}
         </div>
       </div>

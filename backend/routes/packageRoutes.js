@@ -35,13 +35,13 @@ router.post('/',
 router.put('/:id', 
     verifyToken, 
     adminOnly,
-    [
-        param('id').isInt().withMessage('Package ID must be an integer'),
-        body('amount').optional().isInt({ min: 1 }).withMessage('Amount must be a positive integer'),
-        body('currency').optional().notEmpty().withMessage('Currency cannot be empty'),
-        body('price_egp').optional().isFloat({ min: 0 }).withMessage('Price must be a positive number')
-    ],
-    validateRequest,
+    // [
+    //     param('id').isInt().withMessage('Package ID must be an integer'),
+    //     body('amount').optional().isInt({ min: 1 }).withMessage('Amount must be a positive integer'),
+    //     body('currency').optional().notEmpty().withMessage('Currency cannot be empty'),
+    //     body('price_egp').optional().isFloat({ min: 0 }).withMessage('Price must be a positive number')
+    // ],
+    // validateRequest,
     packageController.updatePackage
 );
 

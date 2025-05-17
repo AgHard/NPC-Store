@@ -25,12 +25,12 @@ exports.register = async (req, res) => {
 
     // Insert new user
     const [result] = await db.query(
-      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-      [username, email, hashedPassword]
+      'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)',
+      [username, email, hashedPassword, 'user']
     );
 
     // Optionally create token immediately after registration
-    const token = jwt.sign({ userId: result.insertId }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: result.insertId, role : 'user' }, process.env.JWT_SECRET, {
       expiresIn: '1d',
     });
 
@@ -41,6 +41,7 @@ exports.register = async (req, res) => {
         id: result.insertId,
         username,
         email,
+        role : 'user'
       },
     });
   } catch (err) {
@@ -73,7 +74,7 @@ exports.login = async (req, res) => {
     }
 
     // Generate token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: '1d',
     });
 
@@ -84,6 +85,7 @@ exports.login = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (err) {

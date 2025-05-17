@@ -17,31 +17,72 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import CartDetails from "./components/CartDetails";
 import WishlistDetails from "./components/WishlistDetails";
-const App= () => {
 
+import AdminRoute from "./components/AdminRoute";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import GameManager from "./components/admin/GameManager";
+import CollectionManager from "./components/admin/CollectionManager";
+import PackageManagerByGame from "./components/admin/PackageManagerByGame";
+
+const App = () => {
   return (
     <main className="overflow-x-hidden bg-black">
       <ScrollToTop />
-      <NavBar2/>
+      <NavBar2 />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contactus" element={<ContactUs />} />
         <Route path="/games" element={<Games />} />
         <Route path="/giftcards" element={<GiftCards />} />
-        <Route path='/games/:group_id' element={<GamePackages />} />
+        <Route path="/games/:group_id" element={<GamePackages />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/upload" element={<UploadImage />} />
-        <Route path="/games/:group_id/packages/:package_id" element={<PackageDetails />} />
-        <Route path="login" element={<LoginPage/>}/>
-        <Route path="/signup" element={<RegisterPage/>}/>
-        <Route path="/cartdetails" element={<CartDetails/>}/>
-        <Route path="/wishlist" element={<WishlistDetails/>}/>
+        <Route
+          path="/games/:group_id/packages/:package_id"
+          element={<PackageDetails />}
+        />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="/signup" element={<RegisterPage />} />
+        <Route path="/cartdetails" element={<CartDetails />} />
+        <Route path="/wishlist" element={<WishlistDetails />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/games"
+          element={
+            <AdminRoute>
+              <GameManager />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/collections"
+          element={
+            <AdminRoute>
+              <CollectionManager />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/packages"
+          element={
+            <AdminRoute>
+              <PackageManagerByGame />
+            </AdminRoute>
+          }
+        />
       </Routes>
       <ReviewsButton />
-      <Footer/>
+      <Footer />
     </main>
-  )
-}
+  );
+};
 
-export default App
+export default App;

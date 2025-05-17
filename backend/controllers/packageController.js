@@ -16,53 +16,64 @@ exports.getPackagesByGame = async (req, res) => {
 
 // Add a package for a game (Protected, Admin Only)
 exports.addPackage = async (req, res) => {
-    const { game_id, amount, currency, price_egp, description_of_package } = req.body;
+  const { game_id, amount, currency, price_egp, description_of_package, group_id, image_url } = req.body;
 
-    try {
-        db.query(
-            'INSERT INTO game_packages (game_id, amount, currency, price_egp, description_of_package) VALUES (?, ?, ?, ?, ?)',
-            [game_id, amount, currency, price_egp, description_of_package || ''],
-            (err, result) => {
-                if (err) return res.status(500).json({ error: err.message });
-                res.status(201).json({ message: 'Package added successfully', packageId: result.insertId });
-            }
-        );
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+  try {
+    const [result] = await db.query(
+      `INSERT INTO game_packages 
+       (game_id, amount, currency, price_egp, description_of_package, group_id, image_url) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [game_id, amount, currency, price_egp, description_of_package, group_id, image_url || '']
+    );
+
+    res.status(201).json({ message: "Package added successfully", packageId: result.insertId });
+  } catch (error) {
+    console.error("Error adding package:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+
 
 // Update a package (Protected, Admin Only)
 exports.updatePackage = async (req, res) => {
-    const packageId = req.params.id;
-    const { amount, currency, price_egp, description_of_package } = req.body;
+  const { id } = req.params;
+  const { amount, currency, price_egp, description_of_package, group_id, image_url } = req.body;
 
-    try {
-        db.query(
-            'UPDATE game_packages SET amount = ?, currency = ?, price_egp = ?, description_of_package = ? WHERE id = ?',
-            [amount, currency, price_egp, description_of_package, packageId],
-            (err, result) => {
-                if (err) return res.status(500).json({ error: err.message });
-                if (result.affectedRows === 0) return res.status(404).json({ error: 'Package not found' });
-                res.json({ message: 'Package updated successfully' });
-            }
-        );
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+  try {
+    const [result] = await db.query(
+      `UPDATE game_packages 
+       SET amount = ?, currency = ?, price_egp = ?, description_of_package = ?, group_id = ?, image_url = ? 
+       WHERE id = ?`,
+      [amount, currency, price_egp, description_of_package, group_id, image_url, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Package not found" });
     }
+
+    res.json({ message: "Package updated successfully" });
+  } catch (error) {
+    console.error("Error updating package:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+
 
 // Delete a package (Protected, Admin Only)
 exports.deletePackage = async (req, res) => {
-    const packageId = req.params.id;
+  const { id } = req.params;
 
-    try {
-        db.query('DELETE FROM game_packages WHERE id = ?', [packageId], (err, result) => {
-            if (err) return res.status(500).json({ error: err.message });
-            if (result.affectedRows === 0) return res.status(404).json({ error: 'Package not found' });
-            res.json({ message: 'Package deleted successfully' });
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+  try {
+    const [result] = await db.query("DELETE FROM game_packages WHERE id = ?", [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Package not found" });
     }
+
+    res.json({ message: "Package deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting package:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+
