@@ -4,21 +4,21 @@ A React-based NPC item shop interface, built with Vite and Tailwind CSS, designe
 
 🚀 Features
 
-Dynamic item catalog with pricing and descriptions
+• Dynamic item catalog with pricing and descriptions
 
-Interactive UI for purchasing and selling items
+• Interactive UI for purchasing and selling items
 
-Responsive design suitable for various screen sizes
+• Responsive design suitable for various screen sizes
 
-Modular components for easy customization and scalability
+• Modular components for easy customization and scalability
 
 🛠️ Tech Stack
 
-Frontend: React.js, Vite
+• Frontend: React.js, Vite
 
-Styling: Tailwind CSS
+• Styling: Tailwind CSS
 
-State Management: React Hooks
+• State Management: React Hooks
 
 📦 Installation
 
@@ -73,11 +73,11 @@ Click here to watch the demo on YouTube
 
 🧪 Available Scripts
 
-npm run dev: Runs the app in development mode.
+• npm run dev: Runs the app in development mode.
 
-npm run build: Builds the app for production.
+• npm run build: Builds the app for production.
 
-npm run preview: Previews the production build locally.
+• npm run preview: Previews the production build locally.
 
 🤝 Contributing
 
