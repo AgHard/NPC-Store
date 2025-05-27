@@ -21,34 +21,23 @@ const dropdownVariants = {
 };
 
 const NavList = () => {
-  const [navItems, setNavItems] = useState([]);
-  const { collections } = useCollections();
+  const [descriptions, setDescriptions] = useState([]);
   const [hoveredNav, setHoveredNav] = useState(null);
+  const { collections } = useCollections();
 
   useEffect(() => {
-    const fetchNavItems = async () => {
+    const fetchDescriptions = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/navItems");
-        setNavItems(res.data);
+        const res = await axios.get("http://localhost:5000/api/collections/descriptions/all");
+        const uniqueDescriptions = res.data.map((item) => item.description);
+        setDescriptions(uniqueDescriptions);
       } catch (err) {
-        console.error("Failed to fetch nav items", err);
+        console.error("Failed to fetch collection descriptions", err);
       }
     };
-    fetchNavItems();
-  }, []);
 
-  const getCollectionId = (name) => {
-    switch (name) {
-      case "GiftCards":
-        return 1;
-      case "Games":
-        return 2;
-      case "Softwares":
-        return 3;
-      default:
-        return null;
-    }
-  };
+    fetchDescriptions();
+  }, []);
 
   const fontFamily = "'Cairo', sans-serif";
 
@@ -68,42 +57,38 @@ const NavList = () => {
         Home
       </NavLink>
 
-      {navItems.map((nav) => {
-        const isDropdown = ["GiftCards", "Games", "Softwares"].includes(nav.name);
-        const collectionId = getCollectionId(nav.name);
+      {descriptions.map((desc) => {
         const dropdownItems = collections.filter(
-          (item) => item.collection_id === collectionId
+          (item) => item.description === desc
         );
 
         return (
           <div
-            key={nav.id}
+            key={desc}
             className="relative px-4 py-2"
-            onMouseEnter={() => setHoveredNav(nav.name)}
+            onMouseEnter={() => setHoveredNav(desc)}
             onMouseLeave={() => setHoveredNav(null)}
           >
             <NavLink
-              to={`/${nav.slug}`}
+              to={`/${desc.toLowerCase()}`}
               className={({ isActive }) =>
                 `flex items-center gap-1 text-sm font-semibold transition-all duration-200 ${
                   isActive ? "text-white" : "text-white/70 hover:text-white"
                 }`
               }
             >
-              {nav.name}
-              {isDropdown && (
-                <motion.span
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: hoveredNav === nav.name ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <FiChevronDown className="mt-[2px] text-sm" />
-                </motion.span>
-              )}
+              {desc}
+              <motion.span
+                initial={{ rotate: 0 }}
+                animate={{ rotate: hoveredNav === desc ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <FiChevronDown className="mt-[2px] text-sm" />
+              </motion.span>
             </NavLink>
 
             <AnimatePresence>
-              {isDropdown && hoveredNav === nav.name && (
+              {hoveredNav === desc && (
                 <motion.div
                   key="dropdown"
                   variants={dropdownVariants}

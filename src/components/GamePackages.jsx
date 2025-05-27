@@ -97,9 +97,15 @@ const GamePackages = () => {
       )}
 
       {selectedRegionId && (
+
         <button
           onClick={() => setSelectedRegionId(null)}
-          className="px-4 py-2 mb-6 text-white bg-blue-600 rounded hover:bg-blue-700"
+          className={`py-2 font-medium rounded-md transition duration-200 px-4 mb-6 text-white `}
+          style={{
+            backgroundColor: goldColor,
+            fontFamily,
+            fontWeight: 600,
+          }}
         >
           Show All Packages
         </button>

@@ -5,6 +5,7 @@ const { verifyToken, adminOnly } = require('../middleware/authMiddleware');
 
 router.get('/', collectionController.getAllCollections);
 router.get('/:collection_id', collectionController.getCollectionsByType);
+router.get('/descriptions/all', collectionController.getCollectionDescriptions);
 
 router.post('/', verifyToken, adminOnly, collectionController.addCollection);
 router.put('/:id', verifyToken, adminOnly, collectionController.updateCollection);

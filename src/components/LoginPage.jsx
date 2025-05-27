@@ -27,6 +27,7 @@ const LoginPage = () => {
         "http://localhost:5000/api/auth/login",
         form
       );
+      const loggedInUser = res.data.user;
       login(res.data.user, res.data.token);
       Swal.fire({
         icon: "success",
@@ -34,7 +35,11 @@ const LoginPage = () => {
         text: `Welcome back, ${res.data.user.username}!`,
         confirmButtonColor: "#FFD700",
       });
+      if (loggedInUser.role === "admin") {
+      navigate("/admin");
+    } else {
       navigate("/");
+    }
     } catch (err) {
       const msg = err.response?.data?.message || "Invalid credentials";
       Swal.fire({
@@ -57,7 +62,7 @@ const LoginPage = () => {
         className="w-full max-w-md p-8 border shadow-2xl rounded-3xl border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl"
         style={{ transformStyle: "preserve-3d" }}
       >
-        <h2 className="mb-6 text-4xl font-extrabold text-center text-gold drop-shadow-[0_0_5px_gold]">
+        <h2 className="mb-6 text-4xl font-extrabold text-center text-gold">
           Login
         </h2>
 

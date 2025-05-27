@@ -39,7 +39,7 @@ const Games = () => {
           marginBottom: "1.5rem",
         }}
       >
-        <h2 style={{ fontSize: "2.5rem", fontWeight: 800, color: goldColor }}>
+        <h2 style={{ fontSize: "2.5rem", fontWeight: 800, color: goldColor, marginTop: "2rem" }}>
           Games we offer.
         </h2>
       </motion.div>

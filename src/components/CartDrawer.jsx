@@ -16,7 +16,7 @@ const CartDrawer = ({ setIsCartOpen }) => {
       animate={{ translateX: "0%" }}
       exit={{ translateX: "100%" }}
       transition={{ type: "tween", duration: 0.3 }}
-      className="fixed top-0 right-0 z-[100] h-screen w-full max-w-xs sm:max-w-sm bg-[#111] text-white shadow-xl flex flex-col"
+      className="fixed top-10 right-0 z-[100] h-screen w-full max-w-xs sm:max-w-sm bg-[#111] text-white shadow-xl flex flex-col"
     >
       <div
         style={{
@@ -123,7 +123,7 @@ const CartDrawer = ({ setIsCartOpen }) => {
           <p className="text-lg font-semibold text-right text-green-400">Total: {total} EGP</p>
           <Link
             to="/cartdetails"
-            className="block w-full py-2 mt-2 text-center bg-green-600 rounded hover:bg-green-700"
+            className="block w-full py-2 mb-10 text-center bg-green-600 rounded hover:bg-green-700"
           >
             View Cart
           </Link>

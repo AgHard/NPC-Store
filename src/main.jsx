@@ -50,6 +50,7 @@ import { BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./context/CartContext.jsx";
 import { WishlistProvider } from "./context/WishlistContext.jsx";
 import { CollectionProvider } from "./context/CollectionContext.jsx";
+import { AnnouncementProvider } from "./context/AnnouncementContext.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -57,6 +58,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const AppTree = (
   <React.StrictMode>
     <BrowserRouter>
+      <AnnouncementProvider>
       <CollectionProvider>
         <AuthProvider>
           <CartProvider>
@@ -66,6 +68,7 @@ const AppTree = (
           </CartProvider>
         </AuthProvider>
       </CollectionProvider>
+      </AnnouncementProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

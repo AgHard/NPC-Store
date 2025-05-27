@@ -17,6 +17,7 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import CartDetails from "./components/CartDetails";
 import WishlistDetails from "./components/WishlistDetails";
+import CheckoutPage from "./components/CheckoutPage";
 
 import AdminRoute from "./components/AdminRoute";
 import AdminDashboard from "./components/admin/AdminDashboard";
@@ -46,6 +47,7 @@ const App = () => {
         <Route path="/signup" element={<RegisterPage />} />
         <Route path="/cartdetails" element={<CartDetails />} />
         <Route path="/wishlist" element={<WishlistDetails />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route
           path="/admin"
           element={

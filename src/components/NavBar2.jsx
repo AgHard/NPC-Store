@@ -10,6 +10,7 @@ import NavList from "./NavList";
 import MobileMenu from "./MobileMenu";
 import UserMenu from "./UserMenu";
 import CartDrawer from "./CartDrawer";
+import AnnouncementBanner from "./AnnouncementBanner";
 
 const NavBar2 = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,16 +57,17 @@ const NavBar2 = () => {
 
   return (
     <>
+    <AnnouncementBanner />
       {/* Header */}
       <header
         style={{
           position: "fixed",
           zIndex: 50,
-          top: "20px",
+          top: "40px",
           left: "50%",
           transform: "translateX(-50%)",
           width: "100%",
-          maxWidth: "1200px",
+          maxWidth: "1100px",
           padding: "12px 24px",
           backgroundColor: "rgba(28, 28, 28, 0.8)",
           color: "white",

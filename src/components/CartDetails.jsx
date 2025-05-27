@@ -3,11 +3,13 @@ import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import  {useNavigate} from "react-router-dom";
 
 const CartDetails = () => {
   const { cartItems, updateQuantity, removeFromCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
   const [loadingId, setLoadingId] = useState(null);
+  const navigate = useNavigate();
 
   const fontFamily = "'Cairo', sans-serif";
   const goldColor = "#FFD700";
@@ -50,7 +52,7 @@ const CartDetails = () => {
       className="min-h-screen px-4 pt-24"
       style={{ backgroundColor: "#0f0f0f", color: "white", fontFamily }}
     >
-      <div className="w-full max-w-6xl mx-auto">
+      <div className="w-full max-w-6xl mx-auto mt-8">
         <h2
           className="pb-4 mb-10 text-3xl font-bold border-b"
           style={{ color: goldColor, borderColor: goldColor }}
@@ -155,6 +157,7 @@ const CartDetails = () => {
               style={{ backgroundColor: goldColor, color: "#000", fontFamily }}
               onMouseEnter={(e) => (e.target.style.backgroundColor = "#e6c200")}
               onMouseLeave={(e) => (e.target.style.backgroundColor = goldColor)}
+              onClick={() => navigate("/checkout", { state: { subtotal } })}
             >
               Proceed to Checkout
             </button>

@@ -26,6 +26,20 @@ exports.getCollectionsByType = async (req, res) => {
     }
 };
 
+// Get distinct collection descriptions (for navbar)
+exports.getCollectionDescriptions = async (req, res) => {
+  try {
+    const [results] = await db.query(
+      'SELECT DISTINCT description FROM collections'
+    );
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching collection descriptions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 exports.addCollection = async (req, res) => {
   const { name, description, collection_id, image_url, group_id } = req.body;

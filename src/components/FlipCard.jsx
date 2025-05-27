@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import { Howl } from "howler";
 import { Star } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
@@ -10,22 +10,33 @@ import { CartContext } from "../context/CartContext";
 const FlipCard = ({ pkg }) => {
   const { user } = useContext(AuthContext);
   const { addToCart } = useContext(CartContext);
-  const navigate = useNavigate();
 
   const handleClick = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+  e.stopPropagation();
+  e.preventDefault();
 
-    if (!user) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Add to Cart Failed',
-        text: 'You must Login first',
-      });
-      return;
-    }
-    addToCart(pkg);
-  };
+  if (!user) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Add to Cart Failed',
+      text: 'You must Login first',
+    });
+    return;
+  }
+
+  addToCart(pkg);
+
+  Swal.fire({
+    icon: 'success',
+    title: 'Added to Cart!',
+    text: `package has been added to your cart.`,
+    cancelButtonText: 'Continue Shopping',
+    confirmButtonColor: '#FFD700',
+    background: '#1E1E1E',
+    color: 'white',
+  });
+};
+
 
   const discount = pkg.original_price
     ? Math.round(((pkg.original_price - pkg.price_egp) / pkg.original_price) * 100)

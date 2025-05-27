@@ -37,7 +37,7 @@ const GiftCards = () => {
           marginBottom: "1.5rem",
         }}
       >
-        <h2 style={{ fontSize: "2.5rem", fontWeight: 800, color: goldColor }}>
+        <h2 style={{ fontSize: "2.5rem", fontWeight: 800, color: goldColor, marginTop: "2rem" }}>
         Gift Cards.
         </h2>
       </motion.div>

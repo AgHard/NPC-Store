@@ -15,7 +15,7 @@ const PackageDetails = () => {
 
   const { addToWishlist } = useContext(WishlistContext);
   const { user } = useContext(AuthContext);
-  const { addToCart, updateQuantity } = useContext(CartContext); // ✅ Use cart context
+  const {cartItems, addToCart, updateQuantity } = useContext(CartContext); // ✅ Use cart context
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -55,26 +55,56 @@ const PackageDetails = () => {
   const goldColor = "#FFD700";
 
   const handleAddToCart = async () => {
-    if (!user) {
-      Swal.fire({
-        icon: "info",
-        title: "You must log in first",
-        position: "center",
-        showConfirmButton: false,
-        timer: 2000,
-        background: "#222",
-        color: "#fff",
-      });
-      return;
+  if (!user) {
+    Swal.fire({
+      icon: "info",
+      title: "You must log in first",
+      position: "center",
+      showConfirmButton: false,
+      timer: 2000,
+      background: "#222",
+      color: "#fff",
+    });
+    return;
+  }
+
+  try {
+    const existingItem = cartItems.find((item) => item.package_id === pkg.id);
+
+    if (existingItem) {
+      const newQuantity = existingItem.quantity + quantity;
+      console.log(`Updating quantity to ${newQuantity}`);
+      await updateQuantity(pkg.id, newQuantity);
+    } else {
+      console.log(`Adding new item to cart`);
+      await addToCart(pkg);
+
+      if (quantity > 1) {
+        console.log(`Correcting quantity to ${quantity}`);
+        await updateQuantity(pkg.id, quantity);
+      }
     }
 
-    try {
-      await addToCart(pkg); // Add package
-      await updateQuantity(pkg.id, quantity); // Immediately update its quantity
-    } catch (err) {
-      console.error("Failed to add/update cart:", err);
-    }
-  };
+    Swal.fire({
+      icon: "success",
+      title: "Added to Cart!",
+      text: `Package has been added to your cart.`,
+      confirmButtonColor: "#FFD700",
+      background: "#1E1E1E",
+      color: "#fff",
+    });
+  } catch (err) {
+    console.error("❌ Full error object:", err);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Failed to add the item to the cart.",
+      background: "#1E1E1E",
+      color: "#fff",
+    });
+  }
+};
+
 
   return (
     <div

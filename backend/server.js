@@ -17,8 +17,11 @@ const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require("./routes/cartRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const navItemsRoutes = require("./routes/navItemsRoutes");
+const announcementRoutes = require('./routes/announcementRoutes');
+const stripeRoutes = require('./routes/stripeRoutes');
+
 db.getConnection()
-    .then(() => console.log('✅ Connected to database'))
+    .then(() => console.log('Connected to database'))
     .catch(err => {
         console.error('Database connection failed:', err);
         process.exit(1);
@@ -36,6 +39,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/cart', cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use('/api/navItems', navItemsRoutes);
+app.use('/api/announcements', announcementRoutes);
+app.use('/api/stripe', stripeRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ error: 'Route not found' });
@@ -43,5 +48,5 @@ app.use((req, res) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

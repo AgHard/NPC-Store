@@ -74,7 +74,7 @@ const RegisterPage = () => {
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="w-full max-w-md p-8 border shadow-2xl rounded-3xl border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl"
           >
-            <h2 className="mb-6 text-4xl font-extrabold text-center text-gold drop-shadow-[0_0_5px_gold]">
+            <h2 className="mb-6 text-4xl font-extrabold text-center text-gold">
               Sign Up
             </h2>
 

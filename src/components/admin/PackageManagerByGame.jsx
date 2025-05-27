@@ -137,7 +137,7 @@ const PackageManagerByGame = () => {
   };
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 pt-24 text-white">
       <h1 className="mb-6 text-3xl font-bold text-gold">
         Manage Packages by Game
       </h1>
